@@ -41,9 +41,9 @@ func filterEvenInPlace(vals []int) []int {
 	}
 
 	// Fill the remaining elements with zero, not the best solution
-	// for ; i < len(vals); i++ {
-	// 	vals[i] = 0
-	// }
+	for ; i < len(vals); i++ {
+		vals[i] = 0
+	}
 	
 	// better return a slice
 	return vals[:i]
