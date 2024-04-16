@@ -41,7 +41,7 @@ func GetLogger() *Logger {
 		}
 
 		logger = &Logger{
-			Logger: log.New(file, "", log.Ldate|log.Ltime|log.Lmicroseconds|log.Lshortfile),
+			Logger: log.New(file, "SMPM <--> ", log.Ldate|log.Ltime|log.Lmicroseconds|log.Lshortfile),
 			level:  DebugLevel, // Default level; can be set to something else as needed
 		}
 	})
@@ -56,25 +56,37 @@ func (l *Logger) SetLevel(level Level) {
 // Debug logs a debug message if the level is set to Debug
 func (l *Logger) Debug(msg string) {
 	if l.level <= DebugLevel {
-		l.Output(2, "DEBUG: "+msg) // 2 means count the stack frames to correctly identify the caller
+		err := l.Output(2, "DEBUG: "+msg)
+		if err != nil {
+			return
+		} // 2 means count the stack frames to correctly identify the caller
 	}
 }
 
 // Info logs an informational message if the level is set to Info or lower
 func (l *Logger) Info(msg string) {
 	if l.level <= InfoLevel {
-		l.Output(2, "INFO: "+msg)
+		err := l.Output(2, "INFO: "+msg)
+		if err != nil {
+			return
+		}
 	}
 }
 
 // Warn logs a warning message if the level is set to Warn or lower
 func (l *Logger) Warn(msg string) {
 	if l.level <= WarnLevel {
-		l.Output(2, "WARN: "+msg)
+		err := l.Output(2, "WARN: "+msg)
+		if err != nil {
+			return
+		}
 	}
 }
 
 // Error logs an error message
 func (l *Logger) Error(msg string) {
-	l.Output(2, "ERROR: "+msg)
+	err := l.Output(2, "ERROR: "+msg)
+	if err != nil {
+		return
+	}
 }

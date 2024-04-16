@@ -14,6 +14,22 @@ type UserProfile struct {
 	ProfileType    ProfileType
 }
 
+type RelationStatus string
+
+const (
+	Single      RelationStatus = "single"
+	Married     RelationStatus = "married"
+	Engaged     RelationStatus = "engaged"
+	Complicated RelationStatus = "complicated"
+)
+
+type ProfileType string
+
+const (
+	BusinessProfile ProfileType = "business"
+	Public          ProfileType = "public"
+)
+
 func (up UserProfile) ID() int {
 	return up.ProfileID
 }
