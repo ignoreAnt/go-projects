@@ -1,4 +1,4 @@
-// Packge main runs the main package
+// Package main runs the main package
 // This is for the array transformation exercise
 package main
 
@@ -17,13 +17,13 @@ func main() {
 }
 
 // arrayTrans function takes a slice an input and return only the number which is even
-// vals in considered un sorted
-func filterEvenNumber(vals []int) []int {
+// values in considered un sorted
+func filterEvenNumber(values []int) []int {
 	var filtered []int
 
-	for i := 0; i < len(vals); i++ {
-		if vals[i]%2 == 0 {
-			filtered = append(filtered, vals[i])
+	for i := 0; i < len(values); i++ {
+		if values[i]%2 == 0 {
+			filtered = append(filtered, values[i])
 		}
 	}
 
@@ -44,7 +44,7 @@ func filterEvenInPlace(vals []int) []int {
 	for ; i < len(vals); i++ {
 		vals[i] = 0
 	}
-	
+
 	// better return a slice
 	return vals[:i]
 }
