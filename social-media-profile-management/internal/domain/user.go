@@ -1,8 +1,9 @@
 package domain
 
+// User struct defines a user
 type User struct {
-	UserID   int
-	UserName string
+	UserID   int    `json:"userID"`
+	UserName string `json:"userName"`
 }
 
 func (u User) ID() int {

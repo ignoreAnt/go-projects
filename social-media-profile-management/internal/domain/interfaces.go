@@ -2,7 +2,7 @@ package domain
 
 // UserRepository User Management
 type UserRepository interface {
-	Create(user User) error
+	Create(user User) (int, error)
 	Update(user User) error
 	GetById(id int) (*User, error)
 	Delete(id int) error

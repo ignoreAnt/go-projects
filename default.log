@@ -1,3 +1,20 @@
 2024/04/16 07:46:45.174527 main.go:18: INFO: This is an informational message.
 2024/04/16 07:46:45.174578 main.go:19: WARN: This is a warning message.
 2024/04/16 07:46:45.174582 main.go:20: ERROR: This is an error message.
+2024/04/16 10:52:47.922267 main.go:22: INFO: This is an informational message.
+2024/04/16 10:52:47.922335 main.go:23: WARN: This is a warning message.
+2024/04/16 10:52:47.922341 main.go:24: ERROR: This is an error message.
+2024/04/16 10:52:47.922361 main.go:37: ERROR: Error opening database connection: 
+2024/04/16 10:52:47.922365 main.go:53: INFO: Service setup complete.
+2024/04/16 10:53:33.321480 main.go:18: INFO: This is an informational message.
+2024/04/16 10:53:33.321570 main.go:19: WARN: This is a warning message.
+2024/04/16 10:53:33.321576 main.go:20: ERROR: This is an error message.
+2024/04/16 10:53:33.321598 main.go:49: INFO: Service setup complete.
+SMPM <-->2024/04/16 10:55:00.599861 main.go:18: INFO: This is an informational message.
+SMPM <-->2024/04/16 10:55:00.599924 main.go:19: WARN: This is a warning message.
+SMPM <-->2024/04/16 10:55:00.599930 main.go:20: ERROR: This is an error message.
+SMPM <-->2024/04/16 10:55:00.599946 main.go:49: INFO: Service setup complete.
+SMPM <--> 2024/04/16 10:55:29.269052 main.go:18: INFO: This is an informational message.
+SMPM <--> 2024/04/16 10:55:29.269128 main.go:19: WARN: This is a warning message.
+SMPM <--> 2024/04/16 10:55:29.269134 main.go:20: ERROR: This is an error message.
+SMPM <--> 2024/04/16 10:55:29.269157 main.go:49: INFO: Service setup complete.
