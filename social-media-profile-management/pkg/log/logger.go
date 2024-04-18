@@ -64,12 +64,10 @@ func (l *Logger) Debug(msg string) {
 }
 
 // Info logs an informational message if the level is set to Info or lower
-func (l *Logger) Info(msg string) {
+func (l *Logger) Info(args ...any) {
 	if l.level <= InfoLevel {
-		err := l.Output(2, "INFO: "+msg)
-		if err != nil {
-			return
-		}
+		l.SetPrefix("INFO: ")
+		l.Println(args...)
 	}
 }
 

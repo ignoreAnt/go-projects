@@ -53,16 +53,19 @@ func (h UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 // GetUserByID is a method that gets a user by id
 func (h UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
-	idStr := r.URL.Query().Get("id")
+	// Get the user id from the query parameter
+	idStr := r.URL.Query().Get("userID")
+	// Convert the id to an integer
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		http.Error(w, "Invalid user Id", http.StatusBadRequest)
 		return
 	}
 
+	// Get the user by id
 	user, err := h.UserService.GetUserByID(id)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "User not found", http.StatusInternalServerError)
 		return
 	}
 

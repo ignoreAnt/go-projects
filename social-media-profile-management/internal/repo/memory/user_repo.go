@@ -8,8 +8,9 @@ import (
 
 // UserRepository is a struct that defines the repository for the user
 type UserRepository struct {
-	users  map[int]domain.User // userId <--> User Object
-	mu     sync.RWMutex        // RWMutex is a reader/writer mutual exclusion lock to ensure that multiple goroutines can read the map concurrently
+	users map[int]domain.User // userId <--> User Object
+	mu    sync.RWMutex        // RWMutex is a reader/writer mutual exclusion lock to ensure that
+	// multiple goroutines can read the map concurrently
 	nextID int
 }
 

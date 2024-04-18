@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"go-projects/social-media-profile-management/internal/api"
-	"go-projects/social-media-profile-management/internal/repo/memory"
+	"go-projects/social-media-profile-management/internal/repo"
 	"go-projects/social-media-profile-management/internal/service"
 	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
@@ -52,7 +52,7 @@ func main() {
 
 	logger.Info("Service setup complete.")
 
-	userRepository := memory.NewUserRepository()
+	userRepository := repo.UserRepositoryFactory(true, nil)
 	userService := service.NewUserService(userRepository)
 	userHandler := api.NewUserHandler(userService)
 
