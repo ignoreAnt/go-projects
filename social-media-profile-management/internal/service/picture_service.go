@@ -9,27 +9,27 @@ type PictureService struct {
 	repository domain.PictureRepository
 }
 
-// NewPictureService creates a new Pictureservice
-func NewPictureService(picrepo domain.PictureRepository) *PictureService {
-	return &PictureService{picrepo}
+// NewPictureService creates a new PictureService
+func NewPictureService(picRepo domain.PictureRepository) *PictureService {
+	return &PictureService{picRepo}
 }
 
 // CreatePicture creates a new picture
 func (ps *PictureService) CreatePicture(pic domain.Picture) error {
-	ps.repository.Create(pic)
-	return nil
+	return ps.repository.Create(pic)
+
 }
 
 // UpdatePicture updates a picture
 func (ps *PictureService) UpdatePicture(pic domain.Picture) error {
-	ps.repository.Update(pic)
-	return nil
+	return ps.repository.Update(pic)
+
 }
 
 // DeletePicture deletes a picture
 func (ps *PictureService) DeletePicture(picID int) error {
-	ps.repository.Delete(picID)
-	return nil
+	return ps.repository.Delete(picID)
+
 }
 
 // GetPictureByID gets a picture by id

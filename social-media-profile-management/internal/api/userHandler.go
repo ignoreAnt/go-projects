@@ -2,7 +2,9 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"go-projects/social-media-profile-management/internal/domain"
+	appErrors "go-projects/social-media-profile-management/internal/errors"
 	"go-projects/social-media-profile-management/internal/service"
 	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
@@ -59,8 +61,8 @@ func (h UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := h.UserService.GetUserByID(id)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if errors.Is(err, appErrors.ErrNotFound) {
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 
