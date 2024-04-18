@@ -1,10 +1,10 @@
 package domain
 
 type Picture struct {
-	PictureID   int
-	PictureURL  string
-	Size        int
-	PictureType PictureType
+	PictureID   int         `json:"pictureID"`
+	PictureURL  string      `json:"pictureURL"`
+	Size        int         `json:"size"`
+	PictureType PictureType `json:"pictureType"`
 }
 
 func (p Picture) ID() int {

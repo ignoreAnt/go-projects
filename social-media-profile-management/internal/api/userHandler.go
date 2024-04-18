@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"go-projects/social-media-profile-management/internal/domain"
 	"go-projects/social-media-profile-management/internal/service"
 	"go-projects/social-media-profile-management/pkg/log"
@@ -45,7 +44,6 @@ func (h UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	err = json.NewEncoder(w).Encode(map[string]int{"userID": id})
 	if err != nil {
-		fmt.Println("error, ", err)
 		logger.Error("Failed to encode into JSON ")
 		return
 	}
