@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
 	"time"
@@ -24,13 +25,16 @@ func LoggerMiddleWare(next http.Handler) http.Handler {
 		// Call the next handler. which can be another middleware in the chain or the final handler
 		next.ServeHTTP(wrappedWriter, r)
 
-		// Log the request
-		logger.Info("Request: %s %s %s %d %s",
-			r.Method,
+		logString := "Request: %s %s %s %d %v"
+		s := fmt.Sprintf(logString, r.Method,
 			r.RequestURI,
 			r.Proto,
 			wrappedWriter.Status(),
 			time.Since(start))
+
+		// Log the request
+		logger.Info(s)
+
 	})
 
 }

@@ -18,3 +18,8 @@ SMPM <--> 2024/04/16 10:55:29.269052 main.go:18: INFO: This is an informational 
 SMPM <--> 2024/04/16 10:55:29.269128 main.go:19: WARN: This is a warning message.
 SMPM <--> 2024/04/16 10:55:29.269134 main.go:20: ERROR: This is an error message.
 SMPM <--> 2024/04/16 10:55:29.269157 main.go:49: INFO: Service setup complete.
+INFO: 2024/04/18 14:40:30.766265 logger.go:70: This is an informational message.
+INFO: 2024/04/18 14:40:30.766680 main.go:23: WARN: This is a warning message.
+INFO: 2024/04/18 14:40:30.766702 main.go:24: ERROR: This is an error message.
+INFO: 2024/04/18 14:40:30.766719 logger.go:70: Service setup complete.
+INFO: 2024/04/18 14:40:30.766730 logger.go:70: Starting server on port 8080

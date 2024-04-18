@@ -14,3 +14,12 @@ func UserRepositoryFactory(useMemory bool, db *sql.DB) domain.UserRepository {
 	}
 	return database.NewUserRepository(db)
 }
+
+func WorkDetailsRepositoryFactory(useMemory bool, db *sql.DB) domain.WorkDetailsRepository {
+	if useMemory {
+		return memory.NewWorkDetailsRepository()
+	}
+
+	return nil
+
+}

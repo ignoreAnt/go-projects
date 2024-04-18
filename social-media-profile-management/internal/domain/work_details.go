@@ -1,12 +1,12 @@
 package domain
 
 type WorkDetail struct {
-	WorkDetailID   int
-	EmployerName   string
-	StartYear      int
-	EndYear        int
-	JobRole        string
-	JobDescription string
+	WorkDetailID   int    `json:"workDetailID"`
+	EmployerName   string `json:"employerName"`
+	StartYear      int    `json:"startYear"`
+	EndYear        int    `json:"endYear"`
+	JobRole        string `json:"jobRole"`
+	JobDescription string `json:"jobDescription"`
 }
 
 func (wd WorkDetail) ID() int {
