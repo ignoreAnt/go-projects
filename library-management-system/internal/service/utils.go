@@ -17,7 +17,6 @@ func generateUniqueID(entityType string) int {
 
 	var idCounter *int
 
-
 	switch entityType {
 	case BookConstant:
 		idCounter = &bookIdCounter

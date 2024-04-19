@@ -3,8 +3,8 @@ package service
 var library Library
 
 type Library struct {
-	Books     []Book
-	Borrowers []Borrower
+	Books         []Book
+	Borrowers     []Borrower
 	BorrowedBooks map[Borrower][]Book
 }
 
@@ -34,5 +34,3 @@ func ListBorrowers() []Borrower {
 func ListBorrowedBooks(borrower Borrower) []Book {
 	return library.BorrowedBooks[borrower]
 }
-
-

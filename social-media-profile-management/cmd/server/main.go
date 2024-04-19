@@ -56,8 +56,16 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	userHandler := api.NewUserHandler(userService)
 
+	// Setup the picture service
+	pictureRepository := memory.NewPictureRepository()
+	pictureService := service.NewPictureService(pictureRepository)
+	pictureHandler := api.NewPictureHandler(pictureService)
+
 	http.HandleFunc("/users", userHandler.CreateUser)
 	http.HandleFunc("/users/get", userHandler.GetUserByID)
+	// Add the picture handler
+	http.HandleFunc("/pictures", pictureHandler.CreatePicture)
+	http.HandleFunc("/pictures/get", pictureHandler.GetPictureByID)
 
 	logger.Info("Starting server on port 8080")
 

@@ -2,10 +2,10 @@ package domain
 
 // Picture represents a picture of a user
 type Picture struct {
-	PictureID   int
-	PictureURL  string
-	Size        int
-	PictureType PictureType
+	PictureID   int         `json:"pictureID"`
+	PictureURL  string      `json:"pictureURL"`
+	Size        int         `json:"size"`
+	PictureType PictureType `json:"pictureType"`
 }
 
 // ID returns the ID of the picture
