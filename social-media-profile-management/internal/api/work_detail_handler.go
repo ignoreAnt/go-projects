@@ -12,8 +12,8 @@ type WorkDetailsHandler struct {
 	WorkDetailService *service.WorkDetailsService
 }
 
-// NewWorkDetailsHander initializes a new WorkDetailsHandler
-func NewWorkDetailsHander(w *service.WorkDetailsService) *WorkDetailsHandler {
+// NewWorkDetailsHandler initializes a new WorkDetailsHandler
+func NewWorkDetailsHandler(w *service.WorkDetailsService) *WorkDetailsHandler {
 	return &WorkDetailsHandler{
 		WorkDetailService: w,
 	}

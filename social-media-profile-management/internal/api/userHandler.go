@@ -27,6 +27,11 @@ func NewUserHandler(userService *service.UserService) *UserHandler {
 // CreateUser is a method that creates a new user
 func (h UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
+	if r.Method != "POST" {
+		http.Error(w, "Invalid HTTP method Type", http.StatusBadRequest)
+		return
+	}
+
 	var user domain.User
 
 	// {"userID" : 1 , "userName" : "John"}

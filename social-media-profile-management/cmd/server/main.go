@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"go-projects/social-media-profile-management/internal/api"
-	"go-projects/social-media-profile-management/internal/repo"
-	"go-projects/social-media-profile-management/internal/service"
+	"go-projects/social-media-profile-management/internal/middleware"
 	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
 )
@@ -51,33 +50,22 @@ func main() {
 	//_ = service.NewUserService(userRepository)
 
 	logger.Info("Service setup complete.")
+	// Create a new ServeMux
+	mux := http.NewServeMux()
+	// Register the routes
+	api.RegisterRoutes(mux)
 
-	userRepository := repo.UserRepositoryFactory(true, nil)
-	userService := service.NewUserService(userRepository)
-	userHandler := api.NewUserHandler(userService)
-
-	// Setup the picture service
-	pictureRepository := memory.NewPictureRepository()
-	pictureService := service.NewPictureService(pictureRepository)
-	pictureHandler := api.NewPictureHandler(pictureService)
-
-	http.HandleFunc("/users", userHandler.CreateUser)
-	http.HandleFunc("/users/get", userHandler.GetUserByID)
-	// Add the picture handler
-	http.HandleFunc("/pictures", pictureHandler.CreatePicture)
-	http.HandleFunc("/pictures/get", pictureHandler.GetPictureByID)
-
-	// Work details
-	workDetailsRepository := repo.WorkDetailsRepositoryFactory(true, nil)
-	workDetailsService := service.NewWorkDetailsService(workDetailsRepository)
-	workDetailsHandler := api.NewWorkDetailsHander(workDetailsService)
-
-	http.HandleFunc("/workdetails", workDetailsHandler.CreateWorkDetails)
+	// Wrap the ServeMux with the logger middleware
+	loggedRouter := middleware.LoggerMiddleWare(mux)
 
 	logger.Info("Starting server on port 8080")
 
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
+	// Start the server
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: loggedRouter,
+	}
+	if err := server.ListenAndServe(); err != nil {
 		logger.Error("Error starting server: ")
 	}
 }
