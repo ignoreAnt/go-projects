@@ -1,10 +1,10 @@
 package domain
 
 type LifeEvent struct {
-	LifeEventID int
-	EventName   string
-	EventType   EventType
-	EventDate   string // Assuming the date as string, could be time.Time for more utility
+	LifeEventID int       `json:"life_event_id"`
+	EventName   string    `json:"event_name"`
+	EventType   EventType `json:"event_type"`
+	EventDate   string    `json:"event_date"`
 }
 
 func (le LifeEvent) ID() int {

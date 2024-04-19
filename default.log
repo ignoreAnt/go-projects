@@ -23,3 +23,12 @@ SMPM <--> 2024/04/17 17:23:52.723829 main.go:23: WARN: This is a warning message
 SMPM <--> 2024/04/17 17:23:52.723844 main.go:24: ERROR: This is an error message.
 SMPM <--> 2024/04/17 17:23:52.723872 main.go:53: INFO: Service setup complete.
 SMPM <--> 2024/04/17 17:23:52.723884 main.go:70: INFO: Starting server on port 8080
+INFO: 2024/04/19 15:03:43.071578 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:68: This is an informational message.
+WARN: 2024/04/19 15:03:43.072049 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:76: This is a warning message.
+ERROR: 2024/04/19 15:03:43.072067 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:84: This is an error message.
+INFO: 2024/04/19 15:03:43.072084 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:68: Service setup complete.
+INFO: 2024/04/19 15:04:04.854670 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:68: This is an informational message.
+WARN: 2024/04/19 15:04:04.855119 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:76: This is a warning message.
+ERROR: 2024/04/19 15:04:04.855138 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:84: This is an error message.
+INFO: 2024/04/19 15:04:04.855159 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:68: Service setup complete.
+INFO: 2024/04/19 15:04:04.855175 /Users/rupeshraghavan/apl/gits/gits-rupesh/go-projects/social-media-profile-management/pkg/log/logger.go:68: Starting server on port 8080

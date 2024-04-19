@@ -29,4 +29,13 @@ func RegisterRoutes(mux *http.ServeMux) {
 	workDetailsHandler := NewWorkDetailsHandler(workDetailsService)
 
 	mux.HandleFunc("/workDetails", workDetailsHandler.CreateWorkDetails)
+
+	// Life event routes setup
+	lifeEventRepository := memory.NewLifeEventRepository() // Assuming factory setup
+	lifeEventService := service.NewLifeEventService(lifeEventRepository)
+	lifeEventHandler := NewLifeEventHandler(lifeEventService)
+
+	mux.HandleFunc("/lifeEvents", lifeEventHandler.CreateLifeEvent)
+	mux.HandleFunc("/lifeEvents/update", lifeEventHandler.UpdateLifeEvent)
+	mux.HandleFunc("/lifeEvents/delete", lifeEventHandler.DeleteLifeEvent)
 }
