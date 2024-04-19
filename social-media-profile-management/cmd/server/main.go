@@ -67,6 +67,13 @@ func main() {
 	http.HandleFunc("/pictures", pictureHandler.CreatePicture)
 	http.HandleFunc("/pictures/get", pictureHandler.GetPictureByID)
 
+	// Work details
+	workDetailsRepository := repo.WorkDetailsRepositoryFactory(true, nil)
+	workDetailsService := service.NewWorkDetailsService(workDetailsRepository)
+	workDetailsHandler := api.NewWorkDetailsHander(workDetailsService)
+
+	http.HandleFunc("/workdetails", workDetailsHandler.CreateWorkDetails)
+
 	logger.Info("Starting server on port 8080")
 
 	err := http.ListenAndServe(":8080", nil)
