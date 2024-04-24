@@ -30,3 +30,12 @@ func RegisterRoutes(mux *http.ServeMux) {
 
 	mux.HandleFunc("/workDetails", workDetailsHandler.CreateWorkDetails)
 }
+
+func SocialMediaProfileRoutes(mux *http.ServeMux) {
+	userProfileRepository := repo.GetUserProfileRepository(repo.MemoryRepo)
+	userProfileService := service.NewSocialMediaProfileService(userProfileRepository)
+	userProfileHandler := NewServiceHandler(userProfileService)
+
+	mux.HandleFunc("/userProfiles", userProfileHandler.Create)
+	mux.HandleFunc("/userProfiles/get", userProfileHandler.Get)
+}

@@ -61,8 +61,9 @@ type LifeEventsRepository interface {
 }
 
 // DataManager Generic DataManager for shared functionality
-type DataManager interface {
-	Create(data interface{}) error
-	Update(data interface{}) error
+type DataManager[T any] interface {
+	Create(data T) error
+	Get(dataID int) (*T, error)
+	Update(dataID int, data T) error
 	Delete(dataID int) error
 }
