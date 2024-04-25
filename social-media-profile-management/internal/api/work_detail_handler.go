@@ -2,9 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"go-projects/social-media-profile-management/internal/domain"
-	"go-projects/social-media-profile-management/internal/service"
 	"net/http"
+	"social-server/internal/domain"
+	"social-server/internal/service"
 )
 
 // WorkDetailsHandler is a struct that defines the handler for the work details

@@ -1,6 +1,6 @@
 package service
 
-import "go-projects/social-media-profile-management/internal/domain"
+import "social-server/internal/domain"
 
 // WorkDetailsService is a struct that defines the service for the work details
 type WorkDetailsService struct {

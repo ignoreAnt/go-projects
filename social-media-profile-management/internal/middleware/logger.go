@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
+	"social-server/pkg/log"
 	"time"
 )
 

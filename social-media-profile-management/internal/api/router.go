@@ -1,10 +1,10 @@
 package api
 
 import (
-	"go-projects/social-media-profile-management/internal/repo"
-	"go-projects/social-media-profile-management/internal/repo/memory"
-	"go-projects/social-media-profile-management/internal/service"
 	"net/http"
+	"social-server/internal/repo"
+	"social-server/internal/repo/memory"
+	"social-server/internal/service"
 )
 
 func RegisterRoutes(mux *http.ServeMux) {

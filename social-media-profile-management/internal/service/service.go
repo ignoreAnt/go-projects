@@ -1,8 +1,6 @@
 package service
 
-import (
-	"go-projects/social-media-profile-management/internal/domain"
-)
+import "social-server/internal/domain"
 
 // SocialMediaProfileService is a service for managing social media profiles.
 type SocialMediaProfileService[T any] struct {

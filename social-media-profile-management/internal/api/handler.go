@@ -2,8 +2,8 @@ package api
 
 import (
 	"encoding/json"
-	"go-projects/social-media-profile-management/internal/service"
 	"net/http"
+	"social-server/internal/service"
 	"strconv"
 )
 
