@@ -29,9 +29,10 @@ ADD . .
 # by leaving it empty we can ensure that the container and binary shipped on it will have the same platform.
 RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -a -o manager ./cmd/server/main.go
 
-# Image to run the service
+# Image to run the service in production
 FROM debian:bullseye-slim
 
+# add git commit label
 ARG GIT_COMMIT=unspecified
 LABEL git_commit=$GIT_COMMIT
 
@@ -81,3 +82,4 @@ ENTRYPOINT ["/tini", "--"]
 
 # server should be the default command
 CMD ["/app/manager"]
+
