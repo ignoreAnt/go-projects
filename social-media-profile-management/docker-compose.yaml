@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  social-media-profile-server:
+    image: social-media-profile-server
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV_PROFILE=dev
+    volumes:
+      - ./logs:/app/logs # local mapping the logs directory
+
+
+# services:
+#   social-media-profile-management:
+#     image: social-media-profile-management
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       - ENV_PROFILE=dev
+#       # - DATASOURCE_URL=jdbc:postgresql://social-media-profile-management-db:5432/social-media-profile-management
+#       # - DATASOURCE_USERNAME=postgres
+#       # - DATASOURCE_PASSWORD=postgres
+#     depends_on:
+#       - social-media-profile-management-db
+#     volumes:
+#       - ./logs:/app/logs # Maps the logs directory 
+
+  # social-media-profile-management-db:
+  #   image: postgres:13
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_DB=social-media-profile-management
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres

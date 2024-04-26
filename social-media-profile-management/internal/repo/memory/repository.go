@@ -2,7 +2,7 @@ package memory
 
 import (
 	"fmt"
-	"go-projects/social-media-profile-management/internal/domain"
+	"social-server/internal/domain"
 	"sync"
 )
 

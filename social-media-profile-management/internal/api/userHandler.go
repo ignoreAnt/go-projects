@@ -3,10 +3,10 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"go-projects/social-media-profile-management/internal/domain"
-	"go-projects/social-media-profile-management/internal/service"
-	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
+	"social-server/internal/domain"
+	"social-server/internal/service"
+	"social-server/pkg/log"
 	"strconv"
 )
 

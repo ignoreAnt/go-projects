@@ -2,9 +2,9 @@ package repo
 
 import (
 	"database/sql"
-	"go-projects/social-media-profile-management/internal/domain"
-	"go-projects/social-media-profile-management/internal/repo/database"
-	"go-projects/social-media-profile-management/internal/repo/memory"
+	"social-server/internal/domain"
+	"social-server/internal/repo/database"
+	"social-server/internal/repo/memory"
 )
 
 type RepoType string

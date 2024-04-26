@@ -1,8 +1,8 @@
 package memory
 
 import (
-	"go-projects/social-media-profile-management/internal/domain"
-	appErrors "go-projects/social-media-profile-management/internal/errors"
+	"social-server/internal/domain"
+	appErrors "social-server/internal/errors"
 	"sync"
 )
 

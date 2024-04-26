@@ -2,8 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"go-projects/social-media-profile-management/internal/domain"
-	"go-projects/social-media-profile-management/internal/service"
+	"social-server/internal/domain"
+	"social-server/internal/service"
+
 	"net/http"
 	"strconv"
 )

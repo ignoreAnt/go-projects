@@ -1,8 +1,6 @@
 package service
 
-import (
-	"go-projects/social-media-profile-management/internal/domain"
-)
+import "social-server/internal/domain"
 
 // UserService is a struct that defines the service for the user
 type UserService struct {

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go-projects/social-media-profile-management/internal/api"
-	"go-projects/social-media-profile-management/internal/middleware"
-	"go-projects/social-media-profile-management/pkg/log"
 	"net/http"
+	"social-server/internal/api"
+	"social-server/internal/middleware"
+	"social-server/pkg/log"
 )
 
 func main() {

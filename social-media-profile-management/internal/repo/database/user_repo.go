@@ -3,8 +3,8 @@ package database
 import (
 	"database/sql"
 	"errors"
-	"go-projects/social-media-profile-management/internal/domain"
-	app_errors "go-projects/social-media-profile-management/internal/errors"
+	"social-server/internal/domain"
+	app_errors "social-server/internal/errors"
 )
 
 // UserRepository is a struct that defines the repository for the user
