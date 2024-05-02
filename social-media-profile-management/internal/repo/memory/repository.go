@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-// Backend is a generic in-memory storage for any type.
+// Backend is a generic inMemoryDB storage for any type.
 type Backend[T any] struct {
 	mu      sync.RWMutex
 	backend map[int]T

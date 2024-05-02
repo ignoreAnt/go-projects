@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/joho/godotenv"
 	"net/http"
+	"os"
 	"social-server/internal/api"
 	"social-server/internal/middleware"
 	"social-server/pkg/log"
@@ -16,6 +18,15 @@ func main() {
 	logger.SetLevel(log.InfoLevel)
 
 	logger.Info("Service setup complete.")
+
+	err := godotenv.Load()
+	if err != nil {
+		logger.Fatal("Error loading .env file")
+	}
+	s3Bucket := os.Getenv("S3_BUCKET")
+	secretKey := os.Getenv("SECRET_KEY")
+
+	logger.Debug(s3Bucket, secretKey)
 	// Create a new ServeMux
 	mux := http.NewServeMux()
 	// Register the routes
