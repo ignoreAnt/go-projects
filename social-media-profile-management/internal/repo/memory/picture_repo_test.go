@@ -136,3 +136,22 @@ func Test_GetById(t *testing.T) {
 	}
 
 }
+
+func Test_CreateV2(t *testing.T) {
+	picture := setup(t)
+	picture.PictureID = 1
+
+	repo := NewPictureRepository()
+
+	t.Run("Testing Creating Picture", func(t *testing.T) {
+		err := repo.Create(picture)
+		if err != nil {
+			t.Errorf("Error Creating picture: %v", err)
+		}
+
+		if len(repo.pictures) != 1 {
+			t.Errorf("Picture creation failed got: %v want: %v", len(repo.pictures), 1)
+		}
+	})
+
+}
