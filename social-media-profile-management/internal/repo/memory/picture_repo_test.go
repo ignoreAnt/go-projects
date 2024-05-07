@@ -1,7 +1,9 @@
 package memory
 
 import (
+	"github.com/stretchr/testify/assert"
 	"social-server/internal/domain"
+	apperrors "social-server/internal/errors"
 	"testing"
 )
 
@@ -19,7 +21,7 @@ func setup(t *testing.T) domain.Picture {
 }
 
 func Test_NewPictureRepository(t *testing.T) {
-	// Create memoenry map of pictures
+	// Create memory map of pictures
 	pics := map[int]domain.Picture{}
 
 	want := PictureRepository{}
@@ -40,6 +42,7 @@ func Test_NewPictureRepository(t *testing.T) {
 
 func Test_Create(t *testing.T) {
 	picture := setup(t)
+	assertions := assert.New(t)
 	picture.PictureID = 1
 
 	want := PictureRepository{
@@ -54,10 +57,10 @@ func Test_Create(t *testing.T) {
 	}
 
 	// t.Log("got", got.pictures, "want", want.pictures)
-
-	if want.nextID != got.nextID {
-		t.Errorf("got %v, want %v", got.nextID, want.nextID)
-	}
+	assertions.Equal(want.nextID, got.nextID, "got %v, want %v", got.nextID, want.nextID)
+	//if want.nextID != got.nextID {
+	//	t.Errorf("got %v, want %v", got.nextID, want.nextID)
+	//}
 
 	if len(want.pictures) != len(got.pictures) {
 		t.Errorf("got %v, want %v", len(got.pictures), len(want.pictures))
@@ -93,6 +96,40 @@ func Test_Update(t *testing.T) {
 	if ok := got.pictures[1].Size == 200; !ok {
 		t.Errorf("got %v, want %v", ok, updatedPic.Size)
 	}
+
+}
+
+func Test_UpdateBeforeCreate(t *testing.T) {
+	// Arrange
+	assertions := assert.New(t)
+	updatedPic := setup(t)
+	updatedPic.PictureID = 1
+	updatedPic.Size = 200
+
+	// Act
+	got := NewPictureRepository()
+	err := got.Update(updatedPic)
+
+	// Assert
+	assertions.Error(err, "Error returned %s", err)
+	assertions.ErrorIs(err, apperrors.ErrNotFound, "Picture not found %s", err)
+
+}
+
+func Test_DeleteBeforeCreate(t *testing.T) {
+	// Arrange
+	// Given
+	assertions := assert.New(t)
+
+	// Act
+	// When
+	got := NewPictureRepository()
+	err := got.Delete(10)
+
+	// Assert
+	// Then
+	assertions.Error(err, "Error returned %s", err)
+	assertions.ErrorIs(err, apperrors.ErrNotFound, "Picture not found %s", err)
 
 }
 
