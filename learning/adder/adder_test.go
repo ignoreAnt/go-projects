@@ -1,7 +1,8 @@
-package adder
+package adder_test
 
 import (
 	"fmt"
+	"go-projects/learning/adder"
 	"os"
 	"testing"
 	"time"
@@ -32,7 +33,7 @@ func Test_addNumber(t *testing.T) {
 	expected := 5
 
 	// Act
-	result := addNumber(x, y)
+	result := adder.AddNumber(x, y)
 
 	// Assert
 	if expected != result {
@@ -47,7 +48,7 @@ func Test_addZero(t *testing.T) {
 	expected := 2
 
 	// Act
-	result := addNumber(x, y)
+	result := adder.AddNumber(x, y)
 
 	// Assert
 	if expected != result {
@@ -62,7 +63,7 @@ func Test_addNegative(t *testing.T) {
 	expected := -3
 
 	// Act
-	result := addNumber(x, y)
+	result := adder.AddNumber(x, y)
 
 	// Assert
 	if expected != result {
@@ -77,7 +78,7 @@ func Test_addNegativeV2(t *testing.T) {
 	expected := -3
 
 	// Act
-	result := addNumber(x, y)
+	result := adder.AddNumber(x, y)
 	t.Fail()
 
 	// Assert

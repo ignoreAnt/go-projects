@@ -61,3 +61,7 @@ func (e *Engine) ProcessOperation(operation Operation) (*string, error) {
 func (e *Engine) Add(x, y float64) float64 {
 	return x + y
 }
+
+func (e *Engine) multiply(x, y float64) float64 {
+	return x * y
+}
