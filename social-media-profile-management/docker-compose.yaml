@@ -2,38 +2,41 @@ version: '3.8'
 
 services:
   social-media-profile-server:
-    image: social-media-profile-server
+    image: social-media-profile-server:latest
     ports:
       - "8080:8080"
     environment:
-      - ENV_PROFILE=dev
+      ENV_PROFILE: ${ENV_PROFILE:-dev}
+      DATABASE_URL: mysql://profile_user:profile_pass@tcp(social-media-profile-db:3306)/social_media_profile?charset=utf8mb4&parseTime=True&loc=Local
+    depends_on:
+      - social-media-profile-db
+      - migrate
     volumes:
-      - ./logs:/app/logs # local mapping the logs directory
+      - ./logs:/app/logs  # Only mount this in development
 
+  social-media-profile-db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-social_media_profile}
+      MYSQL_USER: ${MYSQL_USER:-profile_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-profile_pass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-changeit}
+    volumes:
+      - mysql_data:/var/lib/mysql  # Consider removing or securing in production
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
-# services:
-#   social-media-profile-management:
-#     image: social-media-profile-management
-#     build:
-#       context: .
-#       dockerfile: Dockerfile
-#     ports:
-#       - "8080:8080"
-#     environment:
-#       - ENV_PROFILE=dev
-#       # - DATASOURCE_URL=jdbc:postgresql://social-media-profile-management-db:5432/social-media-profile-management
-#       # - DATASOURCE_USERNAME=postgres
-#       # - DATASOURCE_PASSWORD=postgres
-#     depends_on:
-#       - social-media-profile-management-db
-#     volumes:
-#       - ./logs:/app/logs # Maps the logs directory 
+  migrate:
+    image: migrate/migrate
+    entrypoint: ["migrate", "-path=/migrations", "-database", "mysql://profile_user:profile_pass@tcp(social-media-profile-db:3306)/social_media_profile?charset=utf8mb4&parseTime=True&loc=Local", "up"]
+    volumes:
+      - ./migrations:/migrations
+    depends_on:
+      - social-media-profile-db
 
-  # social-media-profile-management-db:
-  #   image: postgres:13
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     - POSTGRES_DB=social-media-profile-management
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
+volumes:
+  mysql_data:  # Persistent storage for MySQL
