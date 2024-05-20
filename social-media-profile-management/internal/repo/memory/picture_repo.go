@@ -1,71 +1,54 @@
 package memory
 
 import (
+	"context"
+	"errors"
 	"social-server/internal/domain"
-	appErrors "social-server/internal/errors"
-	"sync"
+	"social-server/pkg/util"
+	"sync/atomic"
 )
 
-// PictureRepository is a struct that defines the repository for the picture
 type PictureRepository struct {
-	pictures map[int]domain.Picture
-	mu       sync.RWMutex // RWMutex is a reader/writer mutual exclusion lock to ensure that multiple goroutines can read the map concurrently
-	nextID   int
+	*util.SyncMap[int, domain.Picture]
+	nextID int32
 }
 
-// NewPictureRepository is a function that returns a new PictureRepository
 func NewPictureRepository() *PictureRepository {
-	return &PictureRepository{
-		pictures: make(map[int]domain.Picture),
-		nextID:   1,
+	repo := &PictureRepository{
+		nextID: 1,
 	}
+	generateID := func() int {
+		return int(atomic.AddInt32(&repo.nextID, 1))
+	}
+	repo.SyncMap = util.NewSyncMap[int, domain.Picture](generateID)
+	return repo
 }
 
-// Create is a method that creates a new picture
-func (r *PictureRepository) Create(picture domain.Picture) error {
-	// Acquire the lock
-	r.mu.Lock()
-	defer r.mu.Unlock()
+func (r *PictureRepository) Create(ctx context.Context, picture domain.Picture) (domain.Picture, error) {
+	id, _ := r.SyncMap.Create(picture)
+	picture.PictureID = id
+	return picture, nil
+}
 
-	picture.PictureID = r.nextID
-	r.nextID++
-	r.pictures[picture.PictureID] = picture
+func (r *PictureRepository) GetById(ctx context.Context, id int) (domain.Picture, error) {
+	picture, exists := r.SyncMap.Retrieve(id)
+	if !exists {
+		return domain.Picture{}, errors.New("picture not found")
+	}
+	return picture, nil
+}
 
+func (r *PictureRepository) Update(ctx context.Context, picture domain.Picture) (domain.Picture, error) {
+	_, exists := r.SyncMap.Update(picture.PictureID, picture)
+	if !exists {
+		return domain.Picture{}, errors.New("picture not found")
+	}
+	return picture, nil
+}
+
+func (r *PictureRepository) Delete(ctx context.Context, id int) error {
+	if !r.SyncMap.Delete(id) {
+		return errors.New("picture not found")
+	}
 	return nil
-
-}
-
-// Update is a method that updates a picture
-func (r *PictureRepository) Update(picture domain.Picture) error {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-
-	if _, exists := r.pictures[picture.PictureID]; !exists {
-		return appErrors.ErrNotFound
-	}
-	r.pictures[picture.PictureID] = picture
-	return nil
-}
-
-// Delete is a method that deletes a picture
-func (r *PictureRepository) Delete(pictureID int) error {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-
-	if _, exists := r.pictures[pictureID]; !exists {
-		return appErrors.ErrNotFound
-	}
-	delete(r.pictures, pictureID)
-	return nil
-}
-
-// GetById is a method that gets a picture by its ID
-func (r *PictureRepository) GetById(pictureID int) (*domain.Picture, error) {
-	r.mu.RLock()
-	defer r.mu.RUnlock()
-
-	if picture, exists := r.pictures[pictureID]; exists {
-		return &picture, nil
-	}
-	return nil, appErrors.ErrNotFound
 }

@@ -1,23 +1,32 @@
 package service
 
-import "social-server/internal/domain"
+import (
+	"context"
+	"social-server/internal/domain"
+)
 
-// UserService is a struct that defines the service for the user
 type UserService struct {
-	repository domain.UserRepository
+	*GenericService[domain.User]
 }
 
-// NewUserService is a function that returns a new UserService
 func NewUserService(repo domain.UserRepository) *UserService {
-	return &UserService{repository: repo}
+	return &UserService{
+		GenericService: NewGenericService[domain.User](repo),
+	}
 }
 
-// CreateUser is a method that creates a new user
-func (u *UserService) CreateUser(user domain.User) (int, error) {
-	return u.repository.Create(user)
+func (s *UserService) Create(ctx context.Context, user domain.User) (domain.User, error) {
+	return s.GenericService.Create(ctx, user)
 }
 
-// GetUserByID is a method that gets a user by id
-func (u *UserService) GetUserByID(id int) (*domain.User, error) {
-	return u.repository.GetById(id)
+func (s *UserService) GetById(ctx context.Context, id int) (domain.User, error) {
+	return s.GenericService.GetById(ctx, id)
+}
+
+func (s *UserService) Update(ctx context.Context, user domain.User) (domain.User, error) {
+	return s.GenericService.Update(ctx, user)
+}
+
+func (s *UserService) Delete(ctx context.Context, id int) error {
+	return s.GenericService.Delete(ctx, id)
 }

@@ -1,36 +1,32 @@
 package service
 
-import "social-server/internal/domain"
+import (
+	"context"
+	"social-server/internal/domain"
+)
 
-// PictureService is the struct for service for picture
 type PictureService struct {
-	repository domain.PictureRepository
+	*GenericService[domain.Picture]
 }
 
-// NewPictureService creates a new PictureService
-func NewPictureService(picRepo domain.PictureRepository) *PictureService {
-	return &PictureService{picRepo}
+func NewPictureService(repo domain.PictureRepository) *PictureService {
+	return &PictureService{
+		GenericService: NewGenericService[domain.Picture](repo),
+	}
 }
 
-// CreatePicture creates a new picture
-func (ps *PictureService) CreatePicture(pic domain.Picture) error {
-	return ps.repository.Create(pic)
-
+func (s *PictureService) Create(ctx context.Context, picture domain.Picture) (domain.Picture, error) {
+	return s.GenericService.Create(ctx, picture)
 }
 
-// UpdatePicture updates a picture
-func (ps *PictureService) UpdatePicture(pic domain.Picture) error {
-	return ps.repository.Update(pic)
-
+func (s *PictureService) GetById(ctx context.Context, id int) (domain.Picture, error) {
+	return s.GenericService.GetById(ctx, id)
 }
 
-// DeletePicture deletes a picture
-func (ps *PictureService) DeletePicture(picID int) error {
-	return ps.repository.Delete(picID)
-
+func (s *PictureService) Update(ctx context.Context, picture domain.Picture) (domain.Picture, error) {
+	return s.GenericService.Update(ctx, picture)
 }
 
-// GetPictureByID gets a picture by id
-func (ps *PictureService) GetPictureByID(picID int) (*domain.Picture, error) {
-	return ps.repository.GetById(picID)
+func (s *PictureService) Delete(ctx context.Context, id int) error {
+	return s.GenericService.Delete(ctx, id)
 }
