@@ -2,13 +2,19 @@ package api
 
 import (
 	"net/http"
+	"social-server/internal/domain"
 	"social-server/internal/repo"
 	"social-server/internal/repo/memory"
 	"social-server/internal/service"
 )
 
 func RegisterRoutes(mux *http.ServeMux) {
-	userRepository := repo.UserRepositoryFactory(true, nil)
+	repoType := "memory"
+
+	userRepo := repo.GetRepository[domain.User](repoType)
+	userService := service.NewUserService(userRepo)
+
+	userRepository := repo.GetRepository("memory")
 	userService := service.NewUserService(userRepository)
 	userHandler := NewUserHandler(userService)
 

@@ -1,32 +1,17 @@
 package service
 
 import (
-	"context"
 	"social-server/internal/domain"
 )
 
+// PictureService is a service for pictures
 type PictureService struct {
 	*GenericService[domain.Picture]
 }
 
-func NewPictureService(repo domain.PictureRepository) *PictureService {
+// NewService creates a new picture service
+func (s *PictureService) NewService(repo domain.Repository[domain.Picture]) *PictureService {
 	return &PictureService{
-		GenericService: NewGenericService[domain.Picture](repo),
+		GenericService: NewService[domain.Picture](repo),
 	}
-}
-
-func (s *PictureService) Create(ctx context.Context, picture domain.Picture) (domain.Picture, error) {
-	return s.GenericService.Create(ctx, picture)
-}
-
-func (s *PictureService) GetById(ctx context.Context, id int) (domain.Picture, error) {
-	return s.GenericService.GetById(ctx, id)
-}
-
-func (s *PictureService) Update(ctx context.Context, picture domain.Picture) (domain.Picture, error) {
-	return s.GenericService.Update(ctx, picture)
-}
-
-func (s *PictureService) Delete(ctx context.Context, id int) error {
-	return s.GenericService.Delete(ctx, id)
 }

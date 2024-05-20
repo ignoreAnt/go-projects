@@ -1,32 +1,17 @@
 package service
 
 import (
-	"context"
 	"social-server/internal/domain"
 )
 
+// UserProfileService is a service for User Profiles
 type UserProfileService struct {
 	*GenericService[domain.UserProfile]
 }
 
-func NewUserProfileService(repo domain.UserProfileRepository) *UserProfileService {
+// NewService creates a new user profile service
+func (s *UserProfileService) NewService(repo domain.Repository[domain.UserProfile]) *UserProfileService {
 	return &UserProfileService{
-		GenericService: NewGenericService[domain.UserProfile](repo),
+		GenericService: NewService[domain.UserProfile](repo),
 	}
-}
-
-func (s *UserProfileService) Create(ctx context.Context, profile domain.UserProfile) (domain.UserProfile, error) {
-	return s.GenericService.Create(ctx, profile)
-}
-
-func (s *UserProfileService) GetById(ctx context.Context, id int) (domain.UserProfile, error) {
-	return s.GenericService.GetById(ctx, id)
-}
-
-func (s *UserProfileService) Update(ctx context.Context, profile domain.UserProfile) (domain.UserProfile, error) {
-	return s.GenericService.Update(ctx, profile)
-}
-
-func (s *UserProfileService) Delete(ctx context.Context, id int) error {
-	return s.GenericService.Delete(ctx, id)
 }

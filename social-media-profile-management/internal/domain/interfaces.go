@@ -10,6 +10,14 @@ type Repository[T any] interface {
 	Delete(ctx context.Context, id int) error
 }
 
+type RepositoryCreator[R any] interface {
+	NewRepository() R
+}
+
+type ServiceCreator[T any, S any] interface {
+	NewService(repository Repository[T]) S
+}
+
 // UserRepository User specific repository interface
 type UserRepository interface {
 	Repository[User]
@@ -38,4 +46,8 @@ type EducationDetailRepository interface {
 // LifeEventRepository LifeEvent specific repository interface
 type LifeEventRepository interface {
 	Repository[LifeEvent]
+}
+
+type EmploymentDetailRepository interface {
+	Repository[EmploymentDetail]
 }

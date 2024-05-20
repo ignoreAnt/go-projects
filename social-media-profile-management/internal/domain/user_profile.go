@@ -1,7 +1,7 @@
 package domain
 
 type UserProfile struct {
-	ProfileID      int
+	ID             int
 	FirstName      string
 	MiddleName     string
 	LastName       string
@@ -29,7 +29,3 @@ const (
 	BusinessProfile ProfileType = "business"
 	Public          ProfileType = "public"
 )
-
-func (up UserProfile) ID() int {
-	return up.ProfileID
-}

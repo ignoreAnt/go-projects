@@ -9,7 +9,7 @@ type GenericService[T any] struct {
 	repo domain.Repository[T]
 }
 
-func NewGenericService[T any](repo domain.Repository[T]) *GenericService[T] {
+func NewService[T any](repo domain.Repository[T]) *GenericService[T] {
 	return &GenericService[T]{repo: repo}
 }
 

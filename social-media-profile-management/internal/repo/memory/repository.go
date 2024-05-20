@@ -1,67 +1,64 @@
 package memory
 
 import (
-	"fmt"
-	"sync"
+	"context"
+	"errors"
+	"reflect"
+	"social-server/internal/domain"
+	"social-server/pkg/util"
+	"sync/atomic"
 )
 
-// Backend is a generic inMemoryDB storage for any type.
-type Backend[T any] struct {
-	mu      sync.RWMutex
-	backend map[int]T
-	seq     int // for generating unique IDs
+// RepositoryFactory is a generic factory for creating repositories.
+type RepositoryFactory[T domain.Repository[U], U any] struct {
+	nextID int32
 }
 
-// NewBackend creates a new Backend
-func NewBackend[T any]() *Backend[T] {
-	return &Backend[T]{
-		backend: make(map[int]T),
+// GenericRepository is a generic implementation of the Repository interface.
+type GenericRepository[U any] struct {
+	*util.SyncMap[int, U]
+	nextID int32
+}
+
+// NewRepository creates a new GenericRepository.
+func NewRepository[U any]() *GenericRepository[U] {
+	repo := &GenericRepository[U]{
+		nextID: 1,
 	}
-}
-
-// Create adds a new item to the backend and returns its ID.
-func (b *Backend[T]) Create(item T) error {
-
-	b.mu.Lock()
-	defer b.mu.Unlock()
-
-	b.seq++     // increment sequence number to get a unique ID
-	id := b.seq // use the incremented sequence number as the ID
-	b.backend[id] = item
-	return nil
-}
-
-// Get retrieves an item by ID. It returns the item or an error if not found.
-func (b *Backend[T]) Get(id int) (*T, error) {
-	b.mu.RLock()
-	defer b.mu.RUnlock()
-
-	if item, ok := b.backend[id]; ok {
-		return &item, nil
+	generateID := func() int {
+		return int(atomic.AddInt32(&repo.nextID, 1))
 	}
-	return nil, fmt.Errorf("item not found")
+	repo.SyncMap = util.NewSyncMap[int, U](generateID)
+	return repo
 }
 
-// Update modifies an item with the given ID. Returns an error if the item is not found.
-func (b *Backend[T]) Update(id int, item T) error {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-
-	if _, exists := b.backend[id]; !exists {
-		return fmt.Errorf("item not found")
-	}
-	b.backend[id] = item
-	return nil
+func (r *GenericRepository[U]) Create(ctx context.Context, entity U) (U, error) {
+	_, _ = r.SyncMap.Create(entity)
+	return entity, nil
 }
 
-// Delete removes an item by ID. It returns an error if the item does not exist.
-func (b *Backend[T]) Delete(id int) error {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-
-	if _, exists := b.backend[id]; !exists {
-		return fmt.Errorf("item not found")
+func (r *GenericRepository[U]) GetById(ctx context.Context, id int) (U, error) {
+	entity, exists := r.SyncMap.Retrieve(id)
+	if !exists {
+		var zero U
+		return zero, errors.New("entity not found")
 	}
-	delete(b.backend, id)
+	return entity, nil
+}
+
+func (r *GenericRepository[U]) Update(ctx context.Context, entity U) (U, error) {
+	id := reflect.ValueOf(entity).FieldByName("ID").Interface().(int)
+	_, exists := r.SyncMap.Update(id, entity)
+	if !exists {
+		var zero U
+		return zero, errors.New("entity not found")
+	}
+	return entity, nil
+}
+
+func (r *GenericRepository[U]) Delete(ctx context.Context, id int) error {
+	if !r.SyncMap.Delete(id) {
+		return errors.New("entity not found")
+	}
 	return nil
 }

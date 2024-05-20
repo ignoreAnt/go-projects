@@ -1,12 +1,8 @@
 package domain
 
 type Privacy struct {
-	ProfileID int
-	Level     PrivacyLevel
-}
-
-func (p Privacy) ID() int {
-	return p.ProfileID
+	ID    int
+	Level PrivacyLevel
 }
 
 type PrivacyLevel string

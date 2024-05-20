@@ -1,15 +1,11 @@
 package domain
 
 type EducationDetail struct {
-	EducationDetailID int
-	Qualification     string
-	StartYear         int
-	EndYear           int
-	CourseDetails     []CourseDetail
-}
-
-func (ed EducationDetail) ID() int {
-	return ed.EducationDetailID
+	ID            int
+	Qualification string
+	StartYear     int
+	EndYear       int
+	CourseDetails []CourseDetail
 }
 
 type CourseDetail struct {

@@ -1,101 +1,70 @@
 package main
 
 import (
-	"compress/gzip"
+	"context"
+	"encoding/json"
 	"fmt"
 	"io"
-	"os"
-	"strings"
+	"net/http"
+	"time"
 )
 
 func main() {
-	s := "The quick brown fox jumped over the lazy dog"
-	sr := strings.NewReader(s)
 
-	counts, err := countLetters(sr)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(counts)
-
-	file, err := os.Open("default.log")
-	if err != nil {
-		fmt.Println(err)
+	client := &http.Client{
+		Timeout: 30 * time.Second,
 	}
 
-	counts, err = countLetters(file)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(counts)
+	baseURL := "https://cat-fact.herokuapp.com"
+	facts := "/facts"
 
-	r, closer, err := buildGZipReader("default.log.gz")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer closer()
-	counts, err = countLetters(r)
+	//url := "https://jsonplaceholder.typicode.com/todos/1"
+	url := baseURL + facts
+
+	req, err := http.NewRequestWithContext(context.Background(),
+		http.MethodGet, url, nil)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Println(counts)
+	req.Header.Add("X-My-Client", "Learning Go")
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	b := NopCloser(sr)
-	some(b)
-
-	[...data..]<read> ===> {buffer} ===> [...data...]<write>
-}
-
-type nopCloser struct {
-	io.Reader
-}
-
-func (nopCloser) Close() error { return nil }
-
-func NopCloser(r io.Reader) io.ReadCloser {
-	return nopCloser{r}
-}
-
-func some(a io.ReadCloser) {
-
-}
-func countLetters(r io.Reader) (map[string]int, error) {
-	buf := make([]byte, 2048)
-	out := map[string]int{}
-	for {
-		n, err := r.Read(buf)
-		for _, b := range buf[:n] {
-			if (b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z') {
-				out[string(b)]++
-			}
-		}
-		if err == io.EOF {
-			return out, nil
-		}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
 		if err != nil {
-			return nil, err
+			fmt.Println(err)
 		}
-	}
-}
+	}(res.Body)
 
-func buildGZipReader(fileName string) (*gzip.Reader, func(), error) {
-	r, err := os.Open(fileName)
-	if err != nil {
-		return nil, nil, err
+	if res.StatusCode != http.StatusOK {
+		fmt.Println(fmt.Sprintf("unexpected status: got %v", res.Status))
 	}
-	gr, err := gzip.NewReader(r)
+
+	resp, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, nil, err
+		fmt.Println(err)
 	}
-	return gr, func() {
-		err := gr.Close()
-		if err != nil {
-			return
-		}
-		err = r.Close()
-		if err != nil {
-			return
-		}
-	}, nil
+	fmt.Println(res.Header.Get("Content-Type"))
+	fmt.Println(res.Header)
+	fmt.Println(string(resp))
+
+	var data struct {
+		UserID    int    `json:"userId"`
+		ID        int    `json:"_id"`
+		Title     string `json:"title"`
+		Completed bool   `json:"completed"`
+	}
+
+	err = json.NewDecoder(res.Body).Decode(&data)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("%+v\n", data)
+	fmt.Printf("%v\n", data)
+	fmt.Println(data)
 }
