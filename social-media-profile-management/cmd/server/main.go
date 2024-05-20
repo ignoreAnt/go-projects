@@ -21,7 +21,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-		logger.Fatal("Error loading .env file")
+		logger.Fatal("Error loading .env.development file")
 	}
 	s3Bucket := os.Getenv("S3_BUCKET")
 	secretKey := os.Getenv("SECRET_KEY")
