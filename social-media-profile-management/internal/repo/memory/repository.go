@@ -2,7 +2,6 @@ package memory
 
 import (
 	"fmt"
-	"social-server/internal/domain"
 	"sync"
 )
 
@@ -66,11 +65,3 @@ func (b *Backend[T]) Delete(id int) error {
 	delete(b.backend, id)
 	return nil
 }
-
-// Verify Backend implements the DataManager interface
-var _ domain.DataManager[domain.UserProfile] = &Backend[domain.UserProfile]{}
-var _ domain.DataManager[domain.User] = &Backend[domain.User]{}
-var _ domain.DataManager[domain.Picture] = &Backend[domain.Picture]{}
-var _ domain.DataManager[domain.Privacy] = &Backend[domain.Privacy]{}
-var _ domain.DataManager[domain.WorkDetail] = &Backend[domain.WorkDetail]{}
-var _ domain.DataManager[domain.EmploymentDetail] = &Backend[domain.EmploymentDetail]{}

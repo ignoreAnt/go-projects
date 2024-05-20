@@ -1,11 +1,13 @@
 package domain
 
-// User struct defines a user
-type User struct {
-	UserID   int    `json:"userID"`
-	UserName string `json:"userName"`
-}
+import "time"
 
-func (u User) ID() int {
-	return u.UserID
+// User represents a user in the system.
+type User struct {
+	ID        int       `json:"id"`
+	Username  string    `json:"username"`
+	Password  string    `json:"password"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

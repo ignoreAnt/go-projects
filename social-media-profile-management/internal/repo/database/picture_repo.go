@@ -4,7 +4,7 @@ import (
 	"database/sql"
 )
 
-// PictureRepository is a struct that defines the repository for the picture
+// PictureDbRepository PictureRepository is a struct that defines the repository for the picture
 type PictureDbRepository struct {
 	db *sql.DB
 }

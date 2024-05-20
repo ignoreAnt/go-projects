@@ -1,69 +1,41 @@
 package domain
 
-// UserRepository User Management
+import "context"
+
+// Repository is a generic interface for CRUD operations on an entity type T.
+type Repository[T any] interface {
+	Create(ctx context.Context, t T) (T, error)
+	GetById(ctx context.Context, id int) (T, error)
+	Update(ctx context.Context, t T) (T, error)
+	Delete(ctx context.Context, id int) error
+}
+
+// UserRepository User specific repository interface
 type UserRepository interface {
-	Create(user User) (int, error)
-	Update(user User) error
-	GetById(id int) (*User, error)
-	Delete(id int) error
-	UpdateUserName(userID int, newUserName string) error
+	Repository[User]
 }
 
-// UserProfileRepository UserProfile Management
+// UserProfileRepository UserProfile specific repository interface
 type UserProfileRepository interface {
-	Create(profile UserProfile) error
-	Update(profile UserProfile) error
-	GetById(id int) (*UserProfile, error)
-	Delete(id int) error
+	Repository[UserProfile]
 }
 
-// PictureRepository Picture Management
+// PictureRepository Picture specific repository interface
 type PictureRepository interface {
-	Create(picture Picture) error
-	Update(picture Picture) error
-	Delete(pictureID int) error
-	GetById(pictureID int) (*Picture, error)
+	Repository[Picture]
 }
 
-// PrivacyRepository Privacy Settings Management
-type PrivacyRepository interface {
-	SetPrivacy(profileID int, privacy Privacy) error
-	CreatePrivacy(privacy Privacy) error
+// WorkDetailRepository WorkDetail specific repository interface
+type WorkDetailRepository interface {
+	Repository[WorkDetail]
 }
 
-// WorkDetailsRepository WorkDetails Management
-type WorkDetailsRepository interface {
-	Create(workDetail WorkDetail) error
-	Update(workDetail WorkDetail) error
-	Delete(workDetailsID int) error
+// EducationDetailRepository EducationDetail specific repository interface
+type EducationDetailRepository interface {
+	Repository[EducationDetail]
 }
 
-// EmploymentDetailsRepository Employment Details Management
-type EmploymentDetailsRepository interface {
-	Create(employmentDetail EmploymentDetail) error
-	Update(employmentDetail EmploymentDetail) error
-	Delete(employmentDetailsID int) error
-	Get(employmentDetailsID int) (*EmploymentDetail, error)
-}
-
-// EducationDetailsRepository Education Details Management
-type EducationDetailsRepository interface {
-	Create(educationDetails EducationDetail) error
-	Update(educationDetails EducationDetail) error
-	Delete(educationDetailsID int) error
-}
-
-// LifeEventsRepository Life Events Management
-type LifeEventsRepository interface {
-	Create(lifeEvent LifeEvent) error
-	Update(lifeEvent LifeEvent) error
-	Delete(lifeEventID int) error
-}
-
-// DataManager Generic DataManager for shared functionality
-type DataManager[T any] interface {
-	Create(data T) error
-	Get(dataID int) (*T, error)
-	Update(dataID int, data T) error
-	Delete(dataID int) error
+// LifeEventRepository LifeEvent specific repository interface
+type LifeEventRepository interface {
+	Repository[LifeEvent]
 }

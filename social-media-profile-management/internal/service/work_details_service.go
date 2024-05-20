@@ -1,20 +1,32 @@
 package service
 
-import "social-server/internal/domain"
+import (
+	"context"
+	"social-server/internal/domain"
+)
 
-// WorkDetailsService is a struct that defines the service for the work details
-type WorkDetailsService struct {
-	repository domain.WorkDetailsRepository
+type WorkDetailService struct {
+	*GenericService[domain.WorkDetail]
 }
 
-// NewWorkDetailsService creates new WorkDetailsService
-func NewWorkDetailsService(repo domain.WorkDetailsRepository) *WorkDetailsService {
-	return &WorkDetailsService{
-		repository: repo,
+func NewWorkDetailService(repo domain.WorkDetailRepository) *WorkDetailService {
+	return &WorkDetailService{
+		GenericService: NewGenericService[domain.WorkDetail](repo),
 	}
 }
 
-// CreateWorkDetail creates work detail
-func (w *WorkDetailsService) CreateWorkDetails(workDetail domain.WorkDetail) error {
-	return w.repository.Create(workDetail)
+func (s *WorkDetailService) Create(ctx context.Context, detail domain.WorkDetail) (domain.WorkDetail, error) {
+	return s.GenericService.Create(ctx, detail)
+}
+
+func (s *WorkDetailService) GetById(ctx context.Context, id int) (domain.WorkDetail, error) {
+	return s.GenericService.GetById(ctx, id)
+}
+
+func (s *WorkDetailService) Update(ctx context.Context, detail domain.WorkDetail) (domain.WorkDetail, error) {
+	return s.GenericService.Update(ctx, detail)
+}
+
+func (s *WorkDetailService) Delete(ctx context.Context, id int) error {
+	return s.GenericService.Delete(ctx, id)
 }

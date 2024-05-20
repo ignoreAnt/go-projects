@@ -1,75 +1,54 @@
 package memory
 
 import (
+	"context"
+	"errors"
 	"social-server/internal/domain"
-	appErrors "social-server/internal/errors"
-	"sync"
+	"social-server/pkg/util"
+	"sync/atomic"
 )
 
-// WorkDetailsRepository is a struct that defines the repository for the work details
-type WorkDetailsRepository struct {
-	workDetails map[int]domain.WorkDetail
-	mu          sync.RWMutex
-	nextID      int
+type WorkDetailRepository struct {
+	*util.SyncMap[int, domain.WorkDetail]
+	nextID int32
 }
 
-// NewWorkDetailsRepository Creates new domain.WorkDetail repository
-func NewWorkDetailsRepository() *WorkDetailsRepository {
-	return &WorkDetailsRepository{
-		workDetails: make(map[int]domain.WorkDetail),
-		nextID:      1,
+func NewWorkDetailRepository() *WorkDetailRepository {
+	repo := &WorkDetailRepository{
+		nextID: 1,
 	}
+	generateID := func() int {
+		return int(atomic.AddInt32(&repo.nextID, 1))
+	}
+	repo.SyncMap = util.NewSyncMap[int, domain.WorkDetail](generateID)
+	return repo
 }
 
-// Create Work Details Repository
-func (w *WorkDetailsRepository) Create(workDetail domain.WorkDetail) error {
-	w.mu.Lock()
-	defer w.mu.Unlock()
+func (r *WorkDetailRepository) Create(ctx context.Context, detail domain.WorkDetail) (domain.WorkDetail, error) {
+	id, _ := r.SyncMap.Create(detail)
+	detail.WorkDetailID = id
+	return detail, nil
+}
 
-	id := w.nextID
-	workDetail.WorkDetailID = id
-	w.nextID++
-	w.workDetails[workDetail.WorkDetailID] = workDetail
+func (r *WorkDetailRepository) GetById(ctx context.Context, id int) (domain.WorkDetail, error) {
+	detail, exists := r.SyncMap.Retrieve(id)
+	if !exists {
+		return domain.WorkDetail{}, errors.New("work detail not found")
+	}
+	return detail, nil
+}
 
+func (r *WorkDetailRepository) Update(ctx context.Context, detail domain.WorkDetail) (domain.WorkDetail, error) {
+	_, exists := r.SyncMap.Update(detail.WorkDetailID, detail)
+	if !exists {
+		return domain.WorkDetail{}, errors.New("work detail not found")
+	}
+	return detail, nil
+}
+
+func (r *WorkDetailRepository) Delete(ctx context.Context, id int) error {
+	if !r.SyncMap.Delete(id) {
+		return errors.New("work detail not found")
+	}
 	return nil
-}
-
-// Update the workdetail repository
-func (w *WorkDetailsRepository) Update(workDetail domain.WorkDetail) error {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	if _, exists := w.workDetails[workDetail.WorkDetailID]; !exists {
-		return appErrors.ErrNotFound
-	}
-
-	w.workDetails[workDetail.WorkDetailID] = workDetail
-
-	return nil
-}
-
-// Delete the workdetail from repository
-func (w *WorkDetailsRepository) Delete(workDetailsID int) error {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	if _, exists := w.workDetails[workDetailsID]; !exists {
-		return appErrors.ErrNotFound
-	}
-
-	delete(w.workDetails, workDetailsID)
-
-	return nil
-}
-
-func (w *WorkDetailsRepository) GetWorkDetailByid(workDetailsID int) (*domain.WorkDetail, error) {
-	w.mu.RLock()
-	defer w.mu.Unlock()
-
-	if _, exists := w.workDetails[workDetailsID]; !exists {
-		return nil, appErrors.ErrNotFound
-	}
-
-	wd := w.workDetails[workDetailsID]
-	return &wd, nil
 }
