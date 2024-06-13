@@ -23,9 +23,12 @@ func NewSyncMap[K comparable, V any](generateID func() K) *SyncMap[K, V] {
 func (m *SyncMap[K, V]) Create(value V) (K, V) {
 	m.Lock()
 	defer m.Unlock()
+
+	// Critical section start
 	id := m.generateID()
 	m.items[id] = value
 	return id, value
+	// Critical section end
 }
 
 // Retrieve returns an item by key.

@@ -20,7 +20,6 @@ func NewServiceHandler[T any](ser *service.GenericService[T]) *ServiceHandler[T]
 func (h *ServiceHandler[T]) CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	var entity T
-
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
